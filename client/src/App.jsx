@@ -1,15 +1,18 @@
 import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+
 
 function App() {
 
 
   return (
-    <div className="flex items-center justify-center h-screen bg-black-200">
-      <h1 className="text-4xl font-bold text-blue-600 underline">
-        budgET 🚀
-      </h1>
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />}/>
+      </Routes>
+    </Router>
+  );
 }
 
 export default App
