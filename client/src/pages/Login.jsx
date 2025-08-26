@@ -1,15 +1,26 @@
-import React from 'react'
-import { useState } from 'react'
+import React from 'react';
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        
+        setMessage("");
+        setError("");
+        setLoading(true);
+
+
+
         try {
             const res = await fetch("http://localhost:5000/api/auth/login", {
                 method: "POST",
@@ -17,20 +28,29 @@ const Login = () => {
                 body: JSON.stringify({ email, password }),
             });
             
+            setLoading(false);
+
             const data = await res.json();
 
             if(res.ok){
                 localStorage.setItem("token", data.token);
                 setMessage(`Welcome back, ${data.user.name}`);
                 console.log("ok");
+
+
+                setTimeout(() => {
+                    navigate("/dashboard"); // or whatever your protected route is
+                }, 1500);
+
             }else{
                 setMessage(data.message || "Login failed");
                 console.log("Error");
             }
         } 
         catch (err) {
+            setError("⚠️ Something went wrong. Please try again.");
             console.error(err);
-            setMessage("Something went wrong. Please try again")    
+            setLoading(false);
         }  
     };
 
@@ -82,11 +102,21 @@ const Login = () => {
                     required
                 />
 
-                <button
+                {/* <button
                     type="submit"
                     className="w-full bg-green-700 text-white p-2 rounded hover:bg-green-800"
                 >
                     Log In
+                </button> */}
+
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className={`w-full p-2 bg-green-600 text-white rounded hover:bg-green-700 ${
+                        loading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    >
+                    {loading ? "Logging in..." : "Login"}
                 </button>
 
                 <div className="flex justify-between mt-3 text-sm text-gray-600">
@@ -102,7 +132,8 @@ const Login = () => {
                     </a>
                 </div>
 
-                {message && <p className="mt-3 text-center text-sm">{message}</p>}
+                {message && <p className="text-green-600 font-medium mt-2">{message}</p>}
+                {error && <p className="text-red-600 font-medium mt-2">{error}</p>}
             </form>
         </div>
     </div>
