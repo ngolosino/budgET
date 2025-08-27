@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Login = () => {
@@ -18,8 +18,6 @@ const Login = () => {
         setMessage("");
         setError("");
         setLoading(true);
-
-
 
         try {
             const res = await fetch("http://localhost:5000/api/auth/login", {
@@ -54,15 +52,13 @@ const Login = () => {
         }  
     };
 
-
-
     return (
     <div className="flex h-screen w-screen">
         {/* Left Side */}
         <div className="flex items-center justify-center w-1/2 bg-green-700">
             <div className="text-center">
                 <h1 className="text-6xl font-extrabold text-white">.budgET</h1>
-                <p className="text-white mt-2">expense tracker</p>
+                <p className="text-white mt-2">Expense Tracker</p>
             </div>
         </div>
 
@@ -125,11 +121,11 @@ const Login = () => {
                     </a>
                 </div>
 
-                <div className="mt-6 text-center text-sm">
+                <div className="mt-6 text-center text-sm text-black">
                     No account yet?{" "}
-                    <a href="#" className="text-green-700 font-semibold hover:underline">
+                    <Link to="/register" className="text-green-700 font-semibold hover:underline">
                     Register
-                    </a>
+                    </Link>
                 </div>
 
                 {message && <p className="text-green-600 font-medium mt-2">{message}</p>}
