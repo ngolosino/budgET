@@ -32,14 +32,13 @@ const Login = () => {
 
             if(res.ok){
                 localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
                 setMessage(`Welcome back, ${data.user.name}`);
                 console.log("ok");
-
 
                 setTimeout(() => {
                     navigate("/dashboard"); // or whatever your protected route is
                 }, 1500);
-
             }else{
                 setMessage(data.message || "Login failed");
                 console.log("Error");
