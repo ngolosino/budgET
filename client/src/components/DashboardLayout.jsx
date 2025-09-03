@@ -7,12 +7,15 @@ const DashboardLayout = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
+        const storedToken = localStorage.getItem("token");
         const storedUser = localStorage.getItem("user");
-        if(storedUser) {
-            setUser(JSON.parse(storedUser))
+        if(!storedToken || !storedUser) {
+            navigate("/");
+            return;
         }
 
-    }, []);
+        setUser(JSON.parse(storedUser))
+    }, [navigate]);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
